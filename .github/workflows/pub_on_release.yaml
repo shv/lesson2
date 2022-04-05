@@ -24,7 +24,7 @@ jobs:
       - name: Other tests
         run: pytest src/tests.py -v
 
- build_and_pub:
+  build_and_pub:
     # Если тесты были пройдены успешно
     needs: [run_tests]
     runs-on: [ubuntu-latest]
