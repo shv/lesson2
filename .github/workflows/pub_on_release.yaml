@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   # Запуск только при публиковании нового релиза
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   run_tests:
@@ -25,7 +25,6 @@ jobs:
         run: pytest src/tests.py -v
 
   build_and_pub:
-    # Если тесты были пройдены успешно
     needs: [run_tests]
     runs-on: [ubuntu-latest]
     env:
@@ -33,13 +32,9 @@ jobs:
       NAME: ${{ secrets.DOCKER_NAME }}
     steps:
       - name: Login to docker.io
-        # Сначала мы логинимся в docker.io
         run:  echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
-        # Чекаутим код
       - uses: actions/checkout@master
       - name: Build image
-        # Собираем image и называем его так как указано в hub.docker т.е. login/repository:version
         run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
       - name: Push image to docker.io
-        # Пушим образ в registry
         run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
