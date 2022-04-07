@@ -2,6 +2,7 @@ import unittest
 import app as tested_app
 import json
 
+
 class FlaskAppTest(unittest.TestCase):
     def setUp(self) -> None:
         tested_app.app.config['TESTING'] = True
