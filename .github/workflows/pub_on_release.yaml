@@ -4,7 +4,7 @@ on:
   release:
     types: [published]
   # Запуск только при публиковании нового релиза
-  # workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   run_tests:
