@@ -1,14 +1,43 @@
+import pytest
 import unittest
-import app as tested_app
-import json
+from .task1 import URLConverter
 
 
-class FlaskAppTest(unittest.TestCase):
-    def setUp(self) -> None:
-        tested_app.app.config['TESTING'] = True
-        self.app = tested_app.app.test_client()
+@pytest.mark.parametrize(
+    "url, keyword, result_url",
+    [
+        ("http://looooong.com/somepath", "MY-NEW-WS", "http://short.com/MY-NEW-WS"),
+        # ("http://looooong.com/somepath", "MY-NEW-WS", "http://short.com/MY-NEW-WS"),
+        # ("http://looooong.com/somepath", "MY-NEW-WS", "http://short.com/MY-NEW-WS"),
+    ]
+)
+def test_addUrl_and_getUrl_success(url, keyword, result_url):
+    converter = URLConverter()
+    result = converter.addUrl(url, keyword)
+    assert result == result_url
+    source_url = converter.getUrl(result)
+    assert source_url == url
 
-    def test_success(self):
-        r = self.app.get('/')
-        self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.data, b'')
+
+"""
+1. Shorten URL "SEO"
+Given as input a URL and a SEO keyword with a max length of 20 characters, chosen by the user, generate a SEO URL.
+
+Examples:
+
+
+Input:
+URL: http://looooong.com/somepath 
+SEO keyword: MY-NEW-WS
+
+Output: 
+URL: http://short.com/MY-NEW-WS
+
+Input:
+URL: http://looooong.com/somepath 
+SEO keyword: POTATO
+
+Output: 
+URL: http://short.com/POTATO
+
+"""
