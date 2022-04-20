@@ -1,14 +1,17 @@
 from threading import Lock
 
+
 class validationException(Exception):
     def __init__(self, code):
         pass
     pass
 
+
 class URLConverter():
     database_dict = dict()
     domain_prefix = "http://short.com"
     insert_lock = Lock()
+
     def __init(self):
         self.insert_lock = Lock()
 
