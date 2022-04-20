@@ -1,6 +1,9 @@
+import json
 import pytest
 import unittest
-from .task1 import URLConverter
+
+import src.app as tested_app
+from src.task1 import URLConverter
 
 
 @pytest.mark.parametrize(
@@ -17,6 +20,20 @@ def test_addUrl_and_getUrl_success(url, keyword, result_url):
     assert result == result_url
     source_url = converter.getUrl(result)
     assert source_url == url
+
+
+class FlaskAppTEst(unittest.TestCase):
+    def setUp(self) -> None:
+        tested_app.app.config['TESTING'] = True
+        self.app = tested_app.app.test_client()
+
+    def test_get_hello_endpoint(self):
+        r = self.app.get('/')
+        self.assertEqual(r.data, b'Hello world')
+
+    def test_post_hello_endpoint(self):
+        r = self.app.post('/')
+        self.assertEqual(r.status_code, 405)
 
 
 """
